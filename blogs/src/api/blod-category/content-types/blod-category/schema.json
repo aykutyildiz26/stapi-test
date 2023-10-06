@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blod_categories",
+  "info": {
+    "singularName": "blod-category",
+    "pluralName": "blod-categories",
+    "displayName": "Blod_category"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}
