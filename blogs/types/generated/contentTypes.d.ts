@@ -677,42 +677,13 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
-export interface ApiBlodCategoryBlodCategory extends Schema.CollectionType {
-  collectionName: 'blod_categories';
-  info: {
-    singularName: 'blod-category';
-    pluralName: 'blod-categories';
-    displayName: 'Blod_category';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::blod-category.blod-category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::blod-category.blod-category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiBlogBlog extends Schema.CollectionType {
   collectionName: 'blogs';
   info: {
     singularName: 'blog';
     pluralName: 'blogs';
     displayName: 'blog';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -721,6 +692,16 @@ export interface ApiBlogBlog extends Schema.CollectionType {
     title: Attribute.String;
     content: Attribute.RichText;
     image: Attribute.Media;
+    blog_author: Attribute.Relation<
+      'api::blog.blog',
+      'manyToOne',
+      'api::blog-author.blog-author'
+    >;
+    blog_category: Attribute.Relation<
+      'api::blog.blog',
+      'manyToOne',
+      'api::blog-category.blog-category'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -744,6 +725,11 @@ export interface ApiBlogAuthorBlogAuthor extends Schema.CollectionType {
   attributes: {
     name: Attribute.String;
     image: Attribute.Media;
+    blogs: Attribute.Relation<
+      'api::blog-author.blog-author',
+      'oneToMany',
+      'api::blog.blog'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -755,6 +741,42 @@ export interface ApiBlogAuthorBlogAuthor extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::blog-author.blog-author',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiBlogCategoryBlogCategory extends Schema.CollectionType {
+  collectionName: 'blog_categories';
+  info: {
+    singularName: 'blog-category';
+    pluralName: 'blog-categories';
+    displayName: 'Blog_Category';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    blogs: Attribute.Relation<
+      'api::blog-category.blog-category',
+      'oneToMany',
+      'api::blog.blog'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::blog-category.blog-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::blog-category.blog-category',
       'oneToOne',
       'admin::user'
     > &
@@ -778,9 +800,9 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
-      'api::blod-category.blod-category': ApiBlodCategoryBlodCategory;
       'api::blog.blog': ApiBlogBlog;
       'api::blog-author.blog-author': ApiBlogAuthorBlogAuthor;
+      'api::blog-category.blog-category': ApiBlogCategoryBlogCategory;
     }
   }
 }
